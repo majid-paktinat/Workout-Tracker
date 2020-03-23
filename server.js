@@ -5,8 +5,10 @@ const mongoose = require("mongoose");
 const PORT = process.env.PORT || 8080;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/workout";
 
-const Workout = require("./models/workout.js");
-const Exercise = require("./models/exercise.js");
+const db = require("./models");
+
+// const Workout = require("./models/workout.js");
+// const Exercise = require("./models/exercise.js");
 
 const app = express();
 
@@ -20,9 +22,9 @@ app.use(express.static("public"));
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 app.post("/api/workouts", ({ body }, res) => {
-  const workout = new Workout(body);
-
-  Workout.create(workout)
+  const workout = new db.Workout(body);
+  
+  db.Workout.create(workout)
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
@@ -31,17 +33,22 @@ app.post("/api/workouts", ({ body }, res) => {
     });
 });
 
-// app.put("/api/workouts/?id", ({ body }, res) => {
-//   const workout = new Exercise(body.query.id);
+app.put("/api/workouts/:id", (req , res) => {
+  const id = req.params.id;
+  console.log("workout = " + id);
+  console.log("workout = " + req.body);
+  console.log("workout = " + JSON.stringify(req.body));
+
   
-//   Workout.create(workout)
-//     .then(dbWorkout => {
-//       res.json(dbWorkout);
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     });
-// });
+  db.Exercise.create(req.body)
+  .then(({_id}) => db.Workout.findOneAndUpdate({_id: id }, { $push: { exercises: _id } }, { new: true }))
+  .then(dbWorkout => {
+    res.json(dbWorkout);
+  })
+  .catch(err => {
+    res.json(err);
+  });
+});
 
 
 //  /api/workouts/range
@@ -49,6 +56,8 @@ app.post("/api/workouts", ({ body }, res) => {
 // /stats
 
 // /api/workouts (get)
+
+
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
