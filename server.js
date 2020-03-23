@@ -50,33 +50,9 @@ app.put("/api/workouts/:id", (req , res) => {
   });
 });
 
-app.get("/api/workouts", (req, res) => {
-  db.Workout.find({})
-    .then(dbWorkout => {
-
-      db.Exercise.aggregate( [
-        { 
-           $group: {
-              totalDuration: { $sum: '$duration.value' } 
-           } 
-        }
-    ]);
-
-
-
-
-      res.json(dbWorkout);
-    })
-    .catch(err => {
-      res.json(err);
-    });
-});
-
-///api/workouts
-
 
 app.get("/api/workouts/range", (req, res) => {
-  db.Workout.find({}).populate('exercise')
+  db.Workout.find({}).populate('exercises')
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
