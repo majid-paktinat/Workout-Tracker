@@ -57,6 +57,26 @@ app.put("/api/workouts/:id", (req , res) => {
 
 // /api/workouts (get)
 
+app.get("/api/workouts", (req, res) => {
+  db.Workout.find({})
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
+
+app.get("/api/workouts/range", (req, res) => {
+  db.Workout.find({}).populate('exercises')
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
 
 
 app.listen(PORT, () => {
