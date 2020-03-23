@@ -69,7 +69,7 @@ app.get("/api/workouts", (req, res) => {
 
 
 app.get("/api/workouts/range", (req, res) => {
-  db.Workout.find({}).populate('exercises')
+  db.Workout.find({}).populate('exercise')
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
