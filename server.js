@@ -50,22 +50,29 @@ app.put("/api/workouts/:id", (req , res) => {
   });
 });
 
-
-//  /api/workouts/range
-
-// /stats
-
-// /api/workouts (get)
-
 app.get("/api/workouts", (req, res) => {
   db.Workout.find({})
     .then(dbWorkout => {
+
+      db.Exercise.aggregate( [
+        { 
+           $group: {
+              totalDuration: { $sum: '$duration.value' } 
+           } 
+        }
+    ]);
+
+
+
+
       res.json(dbWorkout);
     })
     .catch(err => {
       res.json(err);
     });
 });
+
+///api/workouts
 
 
 app.get("/api/workouts/range", (req, res) => {

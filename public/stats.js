@@ -6,6 +6,7 @@ fetch("/api/workouts/range")
     return response.json();
   })
   .then(data => {
+    console.log(JSON.stringify(data));
     populateChart(data);
   });
 
