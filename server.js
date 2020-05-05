@@ -2,7 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/workout";
 
 const db = require("./models");
@@ -52,7 +52,7 @@ app.put("/api/workouts/:id", (req , res) => {
 
 
 app.get("/api/workouts/range", (req, res) => {
-  db.Workout.find({}).populate('exercises')
+  db.Workout.find({}) //.populate('exercises')
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
