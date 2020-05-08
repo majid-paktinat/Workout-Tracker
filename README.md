@@ -1,6 +1,6 @@
 # Workout Tracker
 
-I created a workout tracker. This required me to create Mongo database with a Mongoose schema and handle routes with Express.
+This project required me to create Mongo database with a Mongoose schema and handle routes with Express.
 
 ## User Story
 
